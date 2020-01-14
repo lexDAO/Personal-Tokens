@@ -1,7 +1,3 @@
-/**
- *Submitted for verification at Etherscan.io on 2020-01-13
-*/
-
 pragma solidity ^0.5.0;
 
 /*
@@ -655,15 +651,13 @@ contract ERC20Mintable is ERC20, MinterRole {
  */
 contract PersonalToken is ERC20Burnable, ERC20Detailed, ERC20Mintable {
 
-    /**
-     * @dev Sets the values for `name`, `symbol`, 'init', 'owner'. All four of
-     * these values are immutable: they can only be set once during
-     * construction. Decimals might be defaulted to '18', per ERC20 norms, imitating 
-     * the relationship between Ether and Wei.
-     */
-    constructor (string memory _name, string memory _symbol, uint8 _decimals, uint256 _init, address owner) public ERC20Detailed(_name, _symbol, _decimals) {
+    // contextualizes token deployment and offered terms, if any
+    string public stamp;
+    
+    constructor (string memory _name, string memory _symbol, string memory _stamp, uint8 _decimals, uint256 _init, address owner) public ERC20Detailed(_name, _symbol, _decimals) {
         _mint(owner, _init);
         _addMinter(owner);
+        stamp = _stamp;
     }
 }
 
@@ -679,12 +673,14 @@ contract PersonalTokenFactory {
     function newPT(
        	string memory _name, 
 		string memory _symbol,
+		string memory _stamp,
 		uint8 _decimals,
 		uint256 _init) public {
        
         PT = new PersonalToken(
             _name, 
             _symbol, 
+            _stamp,
             _decimals,
             _init,
             msg.sender);
